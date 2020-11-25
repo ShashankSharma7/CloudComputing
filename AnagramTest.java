@@ -31,7 +31,7 @@ public class Anagram {
 					throws IOException, InterruptedException {
 				StringTokenizer itr = new StringTokenizer(value.toString());
 				while (itr.hasMoreTokens()) {
-					String word = itr.nextToken().replaceAll("\\W", ""); //replace all on special characters
+					String word = itr.nextToken().replaceAll("[^a-zA-Z0-9]", ""); //replace all on special characters
 					char[] arr = word.toCharArray();
 					Arrays.sort(arr);
 					String wordKey = new String(arr);
@@ -50,14 +50,15 @@ public class Anagram {
 					anagram.add(val.toString());
 				}
 				ArrayList<String> list = new ArrayList<String>(anagram);
-				Collections.sort(list);
-				testword.set(list.toString());
 				
 				for(int i = 0; i < stopWords.length; i++) {
 					if(list.contains(stopWords[i])) {
 						list.remove(stopWords[i]);
 					}
 				}
+				
+				Collections.sort(list);
+				testword.set(list.toString());
 				
 				if(anagram.size() > 1) {
 					context.write(key, testword);
