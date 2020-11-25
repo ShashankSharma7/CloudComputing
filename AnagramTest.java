@@ -60,7 +60,7 @@ public class Anagram {
 				Collections.sort(list);
 				testword.set(list.toString());
 				
-				if(anagram.size() > 1) {
+				if(list.size() > 1) {
 					context.write(key, testword);
 				}
 			}
