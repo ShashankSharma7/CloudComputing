@@ -31,7 +31,7 @@ public class Anagram {
 					throws IOException, InterruptedException {
 				StringTokenizer itr = new StringTokenizer(value.toString());
 				while (itr.hasMoreTokens()) {
-					String word = itr.nextToken().replaceAll("[a-zA-Z0-9]", ""); //replace all on special characters
+					String word = itr.nextToken().replaceAll("[^a-zA-Z0-9]", ""); //replace all on special characters
 					char[] arr = word.toCharArray();
 					Arrays.sort(arr);
 					String wordKey = new String(arr);
