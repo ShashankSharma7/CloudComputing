@@ -82,8 +82,8 @@ public class Anagram {
 					e.printStackTrace();
 				}	
 				
-				TreeMap<String, Integer> sortedMap = new TreeMap<>();
-				sortedMap.putAll(hashmapAnagram);
+				TreeMap<String, Integer> sortedMap = new TreeMap<>(hashmapAnagram);
+				// sortedMap.putAll(hashmapAnagram);
 				// ArrayList<String> list = new ArrayList<String>(anagram);			
 					
 				// Collections.sort(list);
