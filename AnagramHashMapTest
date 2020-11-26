@@ -33,7 +33,7 @@ public class Anagram {
 	public static class AnagramTestReducer
 		extends Reducer<Text, Text, Text, Text> {
 			
-			private Text testword = new Text();
+			// private Text testword = new Text();
 			private Text treemap = new Text();
 			
 			public void reduce(Text key, Iterable<Text> values, Context context)
@@ -61,10 +61,12 @@ public class Anagram {
 					
 					Scanner sc = new Scanner(url.openStream());
 					
-					while (sc.hasNextLine()) {
+					while (sc.hasNextLine()) 
+					{
 						String currentLine = sc.nextLine();
 						String [] words = currentLine.split(",");
-						for(String a : words) {
+						for(String a : words) 
+						{
 							// if(list.contains(a)) {
 								// list.remove(a);
 							// }
@@ -87,15 +89,14 @@ public class Anagram {
 				// Collections.sort(list);
 				// testword.set(list.toString());
 				
-				
-				
 				// if(list.size() > 1)
-				if(sortedMap.size() > 1)				
-				{
+				
+				// if(sortedMap.size() > 1)				
+				// {
 					// context.write(key, testword);
 					treemap.set(sortedMap.toString());
 					context.write(key, treemap);
-				}
+				// }
 			}
 		}
 	
