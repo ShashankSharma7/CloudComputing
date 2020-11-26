@@ -91,12 +91,12 @@ public class Anagram {
 				
 				// if(list.size() > 1)
 				
-				// if(sortedMap.size() > 1)				
-				// {
+				if(sortedMap.size() > 1)				
+				{
 					// context.write(key, testword);
 					treemap.set(sortedMap.toString());
 					context.write(key, treemap);
-				// }
+				}
 			}
 		}
 	
