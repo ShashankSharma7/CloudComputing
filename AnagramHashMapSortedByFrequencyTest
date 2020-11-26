@@ -41,7 +41,7 @@ public class Anagram {
 					throws IOException, InterruptedException {						
 						
 				// HashSet<String> anagram = new HashSet<>();
-				Map<String, Integer> hashmapAnagram = new HashMap<>();
+				HashMap<String, Integer> hashmapAnagram = new HashMap<>();
 				
 				for (Text val : values) 
 				{
@@ -120,7 +120,7 @@ public class Anagram {
 					// sortedByValue.put(entry.getKey(), entry.getValue());
 				// }
 				
-				Hashmap<String, Integer> newSortedHashmapTest = testySort(hashmapAnagram);
+				HashMap<String, Integer> newSortedHashmapTest = testySort(hashmapAnagram);
 				
 				
 				if(newSortedHashmapTest.size() > 1)				
@@ -138,7 +138,7 @@ public class Anagram {
 		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
 				
 				Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-					public int compare (Map.Entry<String, String> e1, Map.Entry<String, String> e2)
+					public int compare (Map.Entry<String, Integer> e1, Map.Entry<String, Integer> e2)
 					{
 						return -1*(e1.getValue()).compareTo(e2.getValue());
 					}
