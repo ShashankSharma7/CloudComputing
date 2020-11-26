@@ -93,39 +93,54 @@ public class Anagram {
 				
 				// if(list.size() > 1)
 				
-				Comparator<Entry<String, String>> valueComparator = new Comparator<Entry<String, String>>() 
-				{
-					@Override
-					public int compare(Entry<String, String> e1, Entry<String, String> e2)
+				// Comparator<Entry<String, String>> valueComparator = new Comparator<Entry<String, String>>() 
+				// {
+					// @Override
+					// public int compare(Entry<String, String> e1, Entry<String, String> e2)
+					// {
+						// String v1 = e1.getValue();
+						// String v2 = e2.getValue();
+						// return v1.compareTo(v2);
+					// }
+				// };
+				
+				// List<Entry<String, String>> listOfEntries = new ArrayList<Entry<String, String>>();
+				
+				// for(Entry<String, Integer> test : hashmapAnagram)
+				// {
+					// listOfEntries.put(test.getKey(), test.getValue().toString());
+				// }
+				
+				// Collections.sort(listOfEntries, valueComparator);
+				
+				// LinkedHashMap<String, String> sortedByValue = new LinkedHashMap<String, String>(listOfEntries.size());
+				
+				// for(Entry<String, String> entry : listOfEntries)
+				// {
+					// sortedByValue.put(entry.getKey(), entry.getValue());
+				// }
+				
+				List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hashmapAnagram.entrySet());
+				
+				Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+					public int compare (Map.Entry<String, String> e1, Map.Entry<String, String> e2)
 					{
-						String v1 = e1.getValue();
-						String v2 = e2.getValue();
-						return v1.compareTo(v2);
+						return (e1.getValue()).compareTo(e2.getValue());
 					}
-				};
+				});
 				
-				List<Entry<String, String>> listOfEntries = new ArrayList<Entry<String, String>>();
-				
-				for(Entry<String, Integer> test : hashmapAnagram
+				HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+				for (Map.Entry<String, Integer> x : list) 
 				{
-					listOfEntries.put(test.getKey(), test.getValue().toString());
-				}
-				
-				Collections.sort(listOfEntries, valueComparator);
-				
-				LinkedHashMap<String, String> sortedByValue = new LinkedHashMap<String, String>(listOfEntries.size());
-				
-				for(Entry<String, String> entry : listOfEntries)
-				{
-					sortedByValue.put(entry.getKey(), entry.getValue());
+						temp.put(x.getKey(), x.getValue());
 				}
 				
 				
-				if(sortedMap.size() > 1)				
+				if(temp.size() > 1)				
 				{
 					// context.write(key, testword);
 					// treemap.set(sortedMap.toString());
-					treemap.set(sortedByValue.toString());
+					treemap.set(temp.toString());
 					context.write(key, treemap);
 				}
 			}
