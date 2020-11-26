@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.util.Map.*;
 import java.net.*;
 
 import org.apache.hadoop.conf.Configuration;
@@ -92,23 +93,29 @@ public class Anagram {
 				
 				// if(list.size() > 1)
 				
-				Comparator<Entry<String, Integer>> valueComparator = new Comparator<Entry<String, Integer>>() 
+				Comparator<Entry<String, String>> valueComparator = new Comparator<Entry<String, String>>() 
 				{
 					@Override
-					public int compare(Entry<String, Integer> e1, Entry<String, Integer> e2)
+					public int compare(Entry<String, String> e1, Entry<String, String> e2)
 					{
-						int v1 = e1.getValue();
-						int v2 = e2.getValue();
+						String v1 = e1.getValue();
+						String v2 = e2.getValue();
 						return v1.compareTo(v2);
 					}
 				};
 				
-				List<Entry<String, Integer>> listOfEntries = new ArrayList<Entry<String, Integer>>(hashmapAnagram);
+				List<Entry<String, String>> listOfEntries = new ArrayList<Entry<String, String>>();
+				
+				for(Entry<String, Integer> test : hashmapAnagram
+				{
+					listOfEntries.put(test.getKey(), test.getValue().toString());
+				}
+				
 				Collections.sort(listOfEntries, valueComparator);
 				
-				LinkedHashMap<String, Integer> sortedByValue = new LinkedHashMap<String, Integer>(listOfEntries.size());
+				LinkedHashMap<String, String> sortedByValue = new LinkedHashMap<String, String>(listOfEntries.size());
 				
-				for(Entry<String, Integer> entry : listOfEntries)
+				for(Entry<String, String> entry : listOfEntries)
 				{
 					sortedByValue.put(entry.getKey(), entry.getValue());
 				}
@@ -117,6 +124,7 @@ public class Anagram {
 				if(sortedMap.size() > 1)				
 				{
 					// context.write(key, testword);
+					// treemap.set(sortedMap.toString());
 					treemap.set(sortedByValue.toString());
 					context.write(key, treemap);
 				}
