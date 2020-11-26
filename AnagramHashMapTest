@@ -32,7 +32,10 @@ public class Anagram {
 		
 	public static class AnagramTestReducer
 		extends Reducer<Text, Text, Text, Text> {
+			
 			private Text testword = new Text();
+			private Text treemap = new Text();
+			
 			public void reduce(Text key, Iterable<Text> values, Context context)
 					throws IOException, InterruptedException {
 						
@@ -84,10 +87,12 @@ public class Anagram {
 				// Collections.sort(list);
 				// testword.set(list.toString());
 				
-				if(list.size() > 1) 
+				// if(list.size() > 1)
+				if(sortedMap.size() > 1)				
 				{
 					// context.write(key, testword);
-					context.write(key, sortedMap);
+					treemap.set(sortedMap.toString());
+					context.write(key, treemap);
 				}
 			}
 		}
