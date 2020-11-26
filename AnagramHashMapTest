@@ -45,7 +45,7 @@ public class Anagram {
 				for (Text val : values) 
 				{
 					// anagram.add(val.toString());
-					if(hashmapAnagram.get(val.toString()) == null) 
+					if(!hashmapAnagram.containsKey(val.toString())) 
 					{
 						hashmapAnagram.put(val.toString(), 1);
 					}
