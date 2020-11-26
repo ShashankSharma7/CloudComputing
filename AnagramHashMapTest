@@ -68,10 +68,10 @@ public class Anagram {
 							// if(list.contains(a)) {
 								// list.remove(a);
 							// }
-							if(hashmapAnagram.containsValue(a))
-							{
+							// if(hashmapAnagram.containsValue(a))
+							// {
 								hashmapAnagram.remove(a);
-							}
+							// }
 						}
 					}
 				}
