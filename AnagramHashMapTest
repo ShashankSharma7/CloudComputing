@@ -37,33 +37,7 @@ public class Anagram {
 			private Text treemap = new Text();
 			
 			public void reduce(Text key, Iterable<Text> values, Context context)
-					throws IOException, InterruptedException {
-						
-				try 
-				{
-					URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
-					
-					Scanner sc = new Scanner(url.openStream());
-					
-					while (sc.hasNextLine()) {
-						String currentLine = sc.nextLine();
-						String [] words = currentLine.split(",");
-						for(String a : words) {
-							// if(list.contains(a)) {
-								// list.remove(a);
-							// }
-							if(values.contains(a))
-							{
-								values.remove(a);
-							}
-						}
-					}
-				}
-				catch (IOException e) 
-				{
-					e.printStackTrace();
-				}		
-						
+					throws IOException, InterruptedException {						
 						
 				// HashSet<String> anagram = new HashSet<>();
 				Map<String, Integer> hashmapAnagram = new HashMap<>();
@@ -80,6 +54,31 @@ public class Anagram {
 						hashmapAnagram.put(val.toString(), hashmapAnagram.get(val) + 1);
 					}
 				}
+				
+				try 
+				{
+					URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
+					
+					Scanner sc = new Scanner(url.openStream());
+					
+					while (sc.hasNextLine()) {
+						String currentLine = sc.nextLine();
+						String [] words = currentLine.split(",");
+						for(String a : words) {
+							// if(list.contains(a)) {
+								// list.remove(a);
+							// }
+							if(hashmapAnagram.containsValue(a))
+							{
+								hashmapAnagram.remove(a);
+							}
+						}
+					}
+				}
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}	
 				
 				TreeMap<String, Integer> sortedMap = new TreeMap<>();
 				sortedMap.putAll(hashmapAnagram);
