@@ -45,7 +45,7 @@ public class Anagram {
 				for (Text val : values) 
 				{
 					// anagram.add(val.toString());
-					if(hashmapAnagram.get(val) == null) 
+					if(hashmapAnagram.get(val.toString()) == null) 
 					{
 						hashmapAnagram.put(val.toString(), 1);
 					}
@@ -82,34 +82,7 @@ public class Anagram {
 				
 				TreeMap<String, Integer> sortedMap = new TreeMap<>();
 				sortedMap.putAll(hashmapAnagram);
-				// ArrayList<String> list = new ArrayList<String>(anagram);
-				
-				// try 
-				// {
-					// URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
-					
-					// Scanner sc = new Scanner(url.openStream());
-					
-					// while (sc.hasNextLine()) {
-						// String currentLine = sc.nextLine();
-						// String [] words = currentLine.split(",");
-						// for(String a : words) {
-							// if(list.contains(a)) {
-								// list.remove(a);
-							// }
-							// if(sortedMap.containsValue(a))
-							// {
-								// sortedMap.remove(a);
-							// }
-						// }
-					// }
-				// }
-				// catch (IOException e) 
-				// {
-					// e.printStackTrace();
-				// }
-					
-					
+				// ArrayList<String> list = new ArrayList<String>(anagram);			
 					
 				// Collections.sort(list);
 				// testword.set(list.toString());
