@@ -120,7 +120,22 @@ public class Anagram {
 					// sortedByValue.put(entry.getKey(), entry.getValue());
 				// }
 				
-				List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hashmapAnagram.entrySet());
+				Hashmap<String, Integer> newSortedHashmapTest = testySort(hashmapAnagram);
+				
+				
+				if(newSortedHashmapTest.size() > 1)				
+				{
+					// context.write(key, testword);
+					// treemap.set(sortedMap.toString());
+					treemap.set(newSortedHashmapTest.toString());
+					context.write(key, treemap);
+				}
+			}
+		}
+		
+	public static HashMap<String, Integer> testySort(HashMap<String, Integer> hm)
+	{
+		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
 				
 				Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
 					public int compare (Map.Entry<String, String> e1, Map.Entry<String, String> e2)
@@ -135,16 +150,8 @@ public class Anagram {
 						temp.put(x.getKey(), x.getValue());
 				}
 				
-				
-				if(temp.size() > 1)				
-				{
-					// context.write(key, testword);
-					// treemap.set(sortedMap.toString());
-					treemap.set(temp.toString());
-					context.write(key, treemap);
-				}
-			}
-		}
+		return temp;
+	}
 	
 	public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
