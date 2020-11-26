@@ -45,13 +45,13 @@ public class Anagram {
 				for (Text val : values) 
 				{
 					// anagram.add(val.toString());
-					if(!hashmapAnagram.containsKey(val.toString())) 
+					if(!(hashmapAnagram.containsKey(val.toString()))) 
 					{
 						hashmapAnagram.put(val.toString(), 1);
 					}
 					else
 					{
-						hashmapAnagram.put(val.toString(), hashmapAnagram.get(val) + 1);
+						hashmapAnagram.put(val.toString(), hashmapAnagram.get(val.toString()) + 1);
 					}
 				}
 				
