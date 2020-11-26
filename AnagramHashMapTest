@@ -39,6 +39,32 @@ public class Anagram {
 			public void reduce(Text key, Iterable<Text> values, Context context)
 					throws IOException, InterruptedException {
 						
+				try 
+				{
+					URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
+					
+					Scanner sc = new Scanner(url.openStream());
+					
+					while (sc.hasNextLine()) {
+						String currentLine = sc.nextLine();
+						String [] words = currentLine.split(",");
+						for(String a : words) {
+							// if(list.contains(a)) {
+								// list.remove(a);
+							// }
+							if(values.contains(a))
+							{
+								values.remove(a);
+							}
+						}
+					}
+				}
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}		
+						
+						
 				// HashSet<String> anagram = new HashSet<>();
 				Map<String, Integer> hashmapAnagram = new HashMap<>();
 				
@@ -59,33 +85,37 @@ public class Anagram {
 				sortedMap.putAll(hashmapAnagram);
 				// ArrayList<String> list = new ArrayList<String>(anagram);
 				
-				try 
-				{
-					URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
+				// try 
+				// {
+					// URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
 					
-					Scanner sc = new Scanner(url.openStream());
+					// Scanner sc = new Scanner(url.openStream());
 					
-					while (sc.hasNextLine()) {
-						String currentLine = sc.nextLine();
-						String [] words = currentLine.split(",");
-						for(String a : words) {
+					// while (sc.hasNextLine()) {
+						// String currentLine = sc.nextLine();
+						// String [] words = currentLine.split(",");
+						// for(String a : words) {
 							// if(list.contains(a)) {
 								// list.remove(a);
 							// }
-							if(sortedMap.containsValue(a))
-							{
-								sortedMap.remove(a);
-							}
-						}
-					}
-				}
-				catch (IOException e) 
-				{
-					e.printStackTrace();
-				}
+							// if(sortedMap.containsValue(a))
+							// {
+								// sortedMap.remove(a);
+							// }
+						// }
+					// }
+				// }
+				// catch (IOException e) 
+				// {
+					// e.printStackTrace();
+				// }
+					
+					
 					
 				// Collections.sort(list);
 				// testword.set(list.toString());
+				
+				
 				
 				// if(list.size() > 1)
 				if(sortedMap.size() > 1)				
