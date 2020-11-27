@@ -204,8 +204,8 @@ public class Anagram {
 			secondJob.setReducerClass(secondReducer.class);
 			secondJob.setOutputKeyClass(Text.class);
 			secondJob.setOutputValueClass(Text.class);
-			FileInputFormat.addInputPath(secondJob, new Path(args[0]));
-			FileOutputFormat.setOutputPath(secondJob, new Path(args[1]));
+			FileInputFormat.addInputPath(secondJob, new Path(args[1]));
+			FileOutputFormat.setOutputPath(secondJob, new Path(args[2]));
 			code = secondJob.waitForCompletion(true) ? 0 : 1;
 		}
 		
