@@ -160,8 +160,11 @@ public class Anagram {
 			public void map(Text key, Text value, Context context)
 					throws IOException, InterruptedException {
 						
+						String keyString = key.toString();
+						String keyLength = keyString.length() - 1;
+						
 						//context.write(value, key);
-						context.write(value, new Text(key.substring(0, key.toString().length() - 1)); //value, key
+						context.write(value, new Text(keyString.substring(0, keyLength))); //value, key
 						
 					}
 		}
