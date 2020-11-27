@@ -161,7 +161,7 @@ public class Anagram {
 					throws IOException, InterruptedException {
 						
 						String keyString = key.toString();
-						String keyLength = keyString.length() - 1;
+						int keyLength = keyString.length() - 1;
 						
 						//context.write(value, key);
 						context.write(value, new Text(keyString.substring(0, keyLength))); //value, key
@@ -209,7 +209,7 @@ public class Anagram {
 			secondJob.setOutputValueClass(Text.class);
 			secondJob.setInputFormatClass(KeyValueTextInputFormat.class);
 			FileInputFormat.addInputPath(secondJob, new Path(args[1]));
-			FileOutputFormat.setOutputPath(secondJob, new Path(args[2]));
+			FileOutputFormat.setOutputPath(secondJob, new Path(args[2]) + '/testoutput');
 			code = secondJob.waitForCompletion(true) ? 0 : 1;
 		}
 		
