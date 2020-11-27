@@ -102,7 +102,7 @@ public class Anagram {
 				HashMap<String, Integer> tempLinkedHashMap = new LinkedHashMap<String, Integer>();
 				for (Map.Entry<String, Integer> x : list) 
 				{
-						tempHashMap.put(x.getKey(), x.getValue());
+						tempLinkedHashMap.put(x.getKey(), x.getValue());
 				}
 				
 		return tempLinkedHashMap;
@@ -156,7 +156,7 @@ public class Anagram {
 			Job secondJob = Job.getInstance(conf2, "second anagram job");
 			secondJob.setJarByClass(Anagram.class);
 			secondJob.setMapperClass(SecondAnagramMapper.class);
-			secondJob.setReducerClass(secondAnagramReducer.class);
+			secondJob.setReducerClass(SecondAnagramReducer.class);
 			secondJob.setOutputKeyClass(Text.class);
 			secondJob.setOutputValueClass(Text.class);
 			secondJob.setInputFormatClass(KeyValueTextInputFormat.class);
