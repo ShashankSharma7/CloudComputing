@@ -100,9 +100,9 @@ public class Anagram {
 				});
 				
 				HashMap<String, Integer> tempLinkedHashMap = new LinkedHashMap<String, Integer>();
-				for (Map.Entry<String, Integer> x : list) 
+				for (Map.Entry<String, Integer> listMapEntry : list) 
 				{
-						tempLinkedHashMap.put(x.getKey(), x.getValue());
+						tempLinkedHashMap.put(listMapEntry.getKey(), listMapEntry.getValue());
 				}
 				
 		return tempLinkedHashMap;
@@ -137,7 +137,6 @@ public class Anagram {
 						}					
 					}
 		}
-	
 	
 	public static void main(String[] args) throws Exception {
         Configuration conf = new Configuration();
