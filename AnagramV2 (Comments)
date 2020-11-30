@@ -1,0 +1,189 @@
+import java.io.*;
+import java.util.*;
+import java.util.Map.*;
+import java.net.*;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.input.KeyValueTextInputFormat;
+
+public class Anagram {
+	
+	//Mapper class used to read through the book, split them by words and then use them as a key to find anagrams.
+	public static class AnagramMapper extends
+		Mapper<Object, Text, Text, Text> {
+			public void map(Object key, Text value, Context context)
+					throws IOException, InterruptedException {
+				StringTokenizer itr = new StringTokenizer(value.toString());
+				while (itr.hasMoreTokens()) 
+				{
+					//Extracting just the word out and ensuring that it is just letters and lower case.
+					String word = itr.nextToken().replaceAll("[^a-zA-Z]", "").toLowerCase();
+					char[] wordArray = word.toCharArray();
+					Arrays.sort(wordArray);
+					String wordKey = new String(wordArray);
+					context.write(new Text(wordKey), new Text(word));
+				}
+			}
+		}
+	//Reducer class used to output the set of anagrams sorted by the frequency of the words.
+	public static class AnagramReducer
+		extends Reducer<Text, Text, Text, Text> {
+			
+			private Text stringHashmap = new Text();
+			
+			public void reduce(Text key, Iterable<Text> values, Context context)
+					throws IOException, InterruptedException {						
+						
+				HashMap<String, Integer> hashmapAnagram = new HashMap<>();
+				
+				for (Text val : values) 
+				{
+					//Extra Feature:
+					//If function used to count the frequency of the word in the book. This can be incremented easily as it overwrites the old key with the new counter value.
+					if(!(hashmapAnagram.containsKey(val.toString()))) 
+					{
+						hashmapAnagram.put(val.toString(), 1);
+					}
+					else
+					{
+						hashmapAnagram.put(val.toString(), hashmapAnagram.get(val.toString()) + 1);
+					}
+				}
+				
+				//Try and catch to extract stop words from the given URL and then removing the words in the current hashmap.
+				try 
+				{
+					URL url = new URL("https://www.textfixer.com/tutorials/common-english-words-with-contractions.txt");
+					
+					Scanner sc = new Scanner(url.openStream());
+					
+					while (sc.hasNextLine()) 
+					{
+						//Reading past each line and splitting it by the comma.
+						String currentLine = sc.nextLine();
+						String [] words = currentLine.split(",");
+						for(String stopWords : words) 
+						{
+							//If the hashmap contains the words specified in the URL, remove the words from the hashmap.
+							if(hashmapAnagram.containsKey(stopWords))
+							{
+								hashmapAnagram.remove(stopWords);
+							}
+						}
+					}
+				}
+				catch (IOException e) 
+				{
+					e.printStackTrace();
+				}	
+				
+				//Hashmap sorted by frequency of words
+				HashMap<String, Integer> sortedHashmap = hashMapSort(hashmapAnagram);
+				
+				//Only output the hashmap greater than size 1 to show anagrams of more than one word
+				if(sortedHashmap.size() > 1)				
+				{
+					stringHashmap.set(sortedHashmap.toString());
+					context.write(key, stringHashmap);
+				}
+			}
+		}
+	
+	//Extra feature: A function created to sort the hashmap as per the frequency of the words.
+	public static HashMap<String, Integer> hashMapSort(HashMap<String, Integer> hm)
+	{
+		List<Map.Entry<String, Integer>> list = new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
+				
+				//Sorting the list based on the frequency and defining it.
+				Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+					public int compare (Map.Entry<String, Integer> mapEntry1, Map.Entry<String, Integer> mapEntry2)
+					{
+						//Comparing the value of the frequency of words and outputting it. Therefore multiplying it by -1.
+						return -1 * (mapEntry1.getValue()).compareTo(mapEntry2.getValue());
+					}
+				});
+				
+				HashMap<String, Integer> tempLinkedHashMap = new LinkedHashMap<String, Integer>();
+				for (Map.Entry<String, Integer> listMapEntry : list) 
+				{
+					//Inserting the sorted elements into a linked hashmap tempoirally to be outputted.
+						tempLinkedHashMap.put(listMapEntry.getKey(), listMapEntry.getValue());
+				}
+				
+		return tempLinkedHashMap;
+	}
+	
+	//Extra Feature: Second mapper class used to sort the Anagram set alphabetically, after it already being sorting by frequency.
+	public static class SecondAnagramMapper extends
+		Mapper<Text, Text, Text, Text> {
+			@Override
+			public void map(Text key, Text value, Context context)
+					throws IOException, InterruptedException {
+						
+						//Extracting just the substring of the key so that just the letters are used for sorting.
+						String keyString = key.toString();
+						int keyLength = keyString.length() - 1;
+						
+						context.write(value, new Text(keyString.substring(0, keyLength)));
+						
+					}
+		}
+	
+	//Extra Feature: Reducer class used just to output the newly sorted Anagram set
+	public static class SecondAnagramReducer
+		extends Reducer<Text, Text, Text, Text> {
+			
+			//Empty text initiated to to shown in output as I want nothing shown as the value.
+			Text emptyOutputText = new Text();
+			
+			@Override
+			public void reduce(Text key, Iterable<Text> values, Context context)
+					throws IOException, InterruptedException {	
+					
+						for (Text value : values) 
+						{
+							//Outputting the Anagram set sorted alphabetically and an empty output string to show nothing as I just want the sets to be shown.
+							context.write(key, emptyOutputText);
+						}					
+					}
+		}
+	
+	public static void main(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "anagram");
+        job.setJarByClass(Anagram.class);
+        job.setMapperClass(AnagramMapper.class);
+        job.setReducerClass(AnagramReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class); 
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        int code = job.waitForCompletion(true) ? 0 : 1;
+		
+		//Extra Feature: Second job being run if the first job is completed correctly
+		if(code == 0) {
+			Configuration conf2 = new Configuration();
+			Job secondJob = Job.getInstance(conf2, "second anagram job");
+			secondJob.setJarByClass(Anagram.class);
+			secondJob.setMapperClass(SecondAnagramMapper.class);
+			secondJob.setReducerClass(SecondAnagramReducer.class);
+			secondJob.setOutputKeyClass(Text.class);
+			secondJob.setOutputValueClass(Text.class);
+			secondJob.setInputFormatClass(KeyValueTextInputFormat.class);
+			FileInputFormat.addInputPath(secondJob, new Path(args[1]));
+			FileOutputFormat.setOutputPath(secondJob, new Path(args[2]));
+			code = secondJob.waitForCompletion(true) ? 0 : 1;
+		}
+		
+		//System.exit initiated of the second job is completed.
+		System.exit(code);
+    }
+}
